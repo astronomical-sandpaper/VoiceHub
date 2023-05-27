@@ -900,11 +900,7 @@ $(document).ready(function(){
 		for (let c = 0; c < 15; c++) fakeEmail.push(~~(65 + Math.random() * 26));
 		const email = `${String.fromCharCode.apply(null, fakeEmail)}@gmail.com`;
 		
-		var params = {						
-			msg: text,
-			voice: voice.arg,
-			email
-			};
+		var params = {"msg": text, "voice": voice, "email": email};
 					
 	$.ajaxSetup({
    	headers:{

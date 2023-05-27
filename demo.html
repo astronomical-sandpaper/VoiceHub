@@ -890,10 +890,15 @@ $(document).ready(function(){
 		
 		var params = {"msg":text, "voice":voice, "email": "ronhendrix0@gmail.com"};
 		
-$.ajax({
-  url: 'foo/bar',
-  headers: { 'x-my-custom-header': 'some value' }
+$.ajaxSetup({
+   headers:{
+      'Authorization': "auth username and password"
+   }
 });
+
+$.get("/api/account/get", function (data) {
+    alert(data);
+}, 'json');
 	});
 });
 </script>

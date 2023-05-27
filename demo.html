@@ -897,9 +897,15 @@ $(document).ready(function(){
 		$("div#status").html('<img src="./VoiceHub/media/images/ajax_loader.gif" />');
 		
 		var params = {"msg":text, "voice":voice, "email":"ronhendrix0@gmail.com"};
-		 var headers= {"User-Agent": "just_audio/2.7.0 (Linux;Android 11) ExoPlayerLib/2.15.0","HTTP_X_API_KEY": "8b3f76a8539","Accept-Encoding": "identity","Icy-Metadata": "1"}
-		
-		$.get(url, params, headers,  function(data){
+	$.ajaxSetup({
+   	headers:{
+	'User-Agent': 'just_audio/2.7.0 (Linux;Android 11) ExoPlayerLib/2.15.0',
+	HTTP_X_API_KEY: '8b3f76a8539',
+	'Accept-Encoding': 'identity',
+	'Icy-Metadata': '1',
+  	 }
+	});
+		$.get(url,  function(data){
 			
 			$("div#status").html("Ready" + data);	
 		});

@@ -899,7 +899,7 @@ $(document).ready(function(){
 		
 		var params = {"msg":text, "voice":voice, "email":"ronhendrix0@gmail.com"};
 
-    https.get({
+    $.get({
       hostname: "api.voiceforge.com",
       path: `/swift_engine?${params}`,
       headers: { 

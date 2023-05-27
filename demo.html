@@ -892,7 +892,7 @@ $(document).ready(function(){
 		var voice = $("#curvox").val();
 		var text  = $("#dtu").val();
 		
-		var url = "https://api.voiceforge.com/swift_engine?HTTP-X-API-KEY=8b3f76a8539";
+		var url = "https://api.voiceforge.com/swift_engine";
 		
 		$("div#status").html('<img src="./VoiceHub/media/images/ajax_loader.gif" />');
 		
@@ -900,14 +900,14 @@ $(document).ready(function(){
 		for (let c = 0; c < 15; c++) fakeEmail.push(~~(65 + Math.random() * 26));
 		const email = `${String.fromCharCode.apply(null, fakeEmail)}@gmail.com`;
 		
-		var params = {"msg": text, "voice": voice, "email": email};
+		var params = {"msg": text, "voice": voice, "email": email, "HTTP-X-API-KEY": "8b3f76a8539"};
 					
 	$.ajaxSetup({
    	headers:{
-	'User-Agent': 'just_audio/2.7.0 (Linux;Android 11) ExoPlayerLib/2.15.0',
-	'HTTP_X_API_KEY': '8b3f76a8539',
-	'Accept-Encoding': 'identity',
-	'Icy-Metadata': '1',
+	"User-Agent": "just_audio/2.7.0 (Linux;Android 11) ExoPlayerLib/2.15.0",
+	"HTTP_X_API_KEY": '8b3f76a8539",
+	"Accept-Encoding": "identity",
+	"Icy-Metadata": "1",
   	 }
 	});
 		$.get(url, params,  function(data){

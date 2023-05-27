@@ -886,9 +886,11 @@ $(document).ready(async function(){
 		
 		var url = "https://api.voiceforge.com/swift_engine";
 		
+		var data = await generateSpeech(text, voice);
+		
 		$("div#status").html('<img src="./VoiceHub/media/images/ajax_loader.gif" />');
 		
-$("div#status").html("Ready" + await generateSpeech(text, voice));	
+$("div#status").html("Ready" + data);	
 });
 });
 </script>

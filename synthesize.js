@@ -1,4 +1,4 @@
-function generateSpeech(message, voice)
+async function generateSpeech(message, voice)
 {
   					let fakeEmail = [];
 						for (let c = 0; c < 15; c++) fakeEmail.push(~~(65 + Math.random() * 26));

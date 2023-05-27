@@ -22,5 +22,4 @@ function generateSpeech(message, voice)
 						}, (r) => {
 							return r;
 						});
-						break;
 }

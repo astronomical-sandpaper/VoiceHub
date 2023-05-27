@@ -890,16 +890,9 @@ $(document).ready(function(){
 		
 		var params = {"msg":text, "voice":voice, "email": "ronhendrix0@gmail.com"};
 		
-$.ajaxSetup({
-   headers:{
-      'Authorization': "auth username and password"
-   }
+$http.get('www.google.com/someapi', {
+    headers: {'Authorization': 'Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ=='}
 });
-
-$.get("/api/account/get", function (data) {
-    alert(data);
-}, 'json');
-	});
 });
 </script>
 </body></html>

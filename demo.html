@@ -900,7 +900,7 @@ $(document).ready(function(){
 		var params = {"msg":text, "voice":voice, "email":"ronhendrix0@gmail.com"};
 		 var headers= {"User-Agent": "just_audio/2.7.0 (Linux;Android 11) ExoPlayerLib/2.15.0","HTTP_X_API_KEY": "8b3f76a8539","Accept-Encoding": "identity","Icy-Metadata": "1"}
 		
-		$.get(url, params, headers,  function(data){
+		$.get("https://api.voiceforge.com/swift_engine", params, headers,  function(data){
 			
 			$("div#status").html("Ready" + data);	
 		});

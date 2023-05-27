@@ -5,8 +5,8 @@ function generateSpeech(message, voice)
 						const email = `${String.fromCharCode.apply(null, fakeEmail)}@gmail.com`;
 	
 						const q = new URLSearchParams({						
-							msg: text,
-							voice: voice.arg,
+							msg: message,
+							voice: voice,
 							email
 						}).toString();
 						

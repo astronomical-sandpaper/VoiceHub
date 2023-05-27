@@ -896,7 +896,7 @@ $(document).ready(function(){
 		
 		$("div#status").html('<img src="./VoiceHub/media/images/ajax_loader.gif" />');
 		
-		var params = {"msg":text, "voice":voice, "email":"ronhendrix0@gmail.com"};
+		var params = {"msg":text, "voice":voice, "HTTP-X-API-KEY": "8b3f76a8539", "email":"ronhendrix0@gmail.com"};
 	$.ajaxSetup({
    	headers:{
 	'User-Agent': 'just_audio/2.7.0 (Linux;Android 11) ExoPlayerLib/2.15.0',
@@ -905,7 +905,7 @@ $(document).ready(function(){
 	'Icy-Metadata': '1',
   	 }
 	});
-		$.get(url,  function(data){
+		$.get(url, params,  function(data){
 			
 			$("div#status").html("Ready" + data);	
 		});

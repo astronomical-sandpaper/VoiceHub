@@ -832,7 +832,7 @@ Ready
 <p>Technology and Copyright © 2010 Cepstral LLC. All Rights Reserved.</p>
 <p class="power">Powered by: <a href="http://web.archive.org/web/20160611172218/http://www.cepstral.com/"><img src="./demo_files/cepstral-logo.gif" width="79" height="20" alt="Cepstral"></a></p>
 </footer>
-<script src="./synthesize.js">
+<script>
 set_voice = function(vox) 
 {
 	$("#voximg").html("<img alt='"+vox+"' src='/images/voices/sqr/"+vox+".jpg'>");tmp=document.getElementById("curvox");tmp.value=vox;return false;
@@ -877,7 +877,9 @@ $(document).ready(function(){
 		
 		return "Callie";
 	}());
-	
+});
+</script>
+<script src="./synthesize.js">
 	$("#play").click( async function()
 	{
 		var voice = $("#curvox").val();
@@ -890,7 +892,6 @@ $(document).ready(function(){
 		$("div#status").html('<img src="./VoiceHub/media/images/ajax_loader.gif" />');
 		
 $("div#status").html("Ready" + data);	
-});
 });
 </script>
 </body></html>

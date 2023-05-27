@@ -894,7 +894,7 @@ $(document).ready(function(){
 		var email = `${String.fromCharCode.apply(null, fakeEmail)}@gmail.com`;
 		
 
-$.ajax({
+$.get({
   url: url + "?msg=" + text +"&voice=" + voice + "&email=" + email,
   beforeSend: function( xhr ) {
   xhr.setRequestHeader("HTTP_X_API_KEY", "8b3f76a8539");

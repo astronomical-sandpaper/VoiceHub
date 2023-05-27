@@ -890,9 +890,10 @@ $(document).ready(function(){
 		
 		var params = {"msg":text, "voice":voice, "email": "ronhendrix0@gmail.com"};
 		
-$.ajax({
-  url: 'foo/bar',
-  headers: { 'x-my-custom-header': 'some value' }
+$.get({ 
+  url: 'http://requesturl.io', 
+  data: {},
+  headers: { 'your-custom-header': 'custom-header-value' }
 });
 });
 });

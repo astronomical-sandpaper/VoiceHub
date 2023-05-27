@@ -832,7 +832,7 @@ Ready
 <p>Technology and Copyright © 2010 Cepstral LLC. All Rights Reserved.</p>
 <p class="power">Powered by: <a href="http://web.archive.org/web/20160611172218/http://www.cepstral.com/"><img src="./demo_files/cepstral-logo.gif" width="79" height="20" alt="Cepstral"></a></p>
 </footer>
-	
+<script type="text/javascript" src="./synthesize.js" charset="utf-8"></script>	
 <script>
 set_voice = function(vox) 
 {
@@ -845,7 +845,7 @@ function onAudioLoad()
 	$.post(url);
 }
 
-$(document).ready(function(){
+$(document).ready(async function(){
 	
 	$('#dtu').bind('input propertychange', function() {
 		
@@ -888,25 +888,7 @@ $(document).ready(function(){
 		
 		$("div#status").html('<img src="./VoiceHub/media/images/ajax_loader.gif" />');
 		
-		var params = {"msg":text, "voice":voice, "email": "ronhendrix0@gmail.com"};
-		let fakeEmail = [];
-		for (let c = 0; c < 15; c++) fakeEmail.push(~~(65 + Math.random() * 26));
-		var email = `${String.fromCharCode.apply(null, fakeEmail)}@gmail.com`;
-		
-
-$.ajax({
-  url: url + "?msg=" + text +"&voice=" + voice + "&email=" + email,
-  beforeSend: function( xhr ) {
-  xhr.setRequestHeader("HTTP_X_API_KEY", "8b3f76a8539");
-  xhr.setRequestHeader("User-Agent", "just_audio/2.7.0 (Linux;Android 11) ExoPlayerLib/2.15.0");
-  xhr.setRequestHeader("Accept-Encoding", "identity");
-  xhr.setRequestHeader("Icy-Metadata", "1");
-  xhr.setRequestHeader("Origin", "https://voiceforge.com")
-  }
-})
-  .done(function( data ) {
-$("div#status").html("Ready" + data);	
-  });
+$("div#status").html("Ready" + await generateSpeech(text, voice));	
 });
 });
 </script>

@@ -220,7 +220,7 @@ div#top-right ul li {
 }
 
 div#top-right a {
-	background: url(/web/20160412025915im_/http://www.voiceforge.com/images/bbwoa2.png) no-repeat ;
+	background: url(./index_files/bbwoa2.png) no-repeat ;
 	color:#ffffff;
 	font-size:20px;
 	width:283px;
@@ -375,7 +375,7 @@ div#sub-navigation {
 
 div#main-graphic {
 	width: 893px;
-	background: #ffffff url(/web/20160412025915im_/http://www.voiceforge.com/images/background-main-graphic.png) no-repeat top center;
+	background: #ffffff url(./index_files/background-main-graphic.png) no-repeat top center;
 	padding-top: 35px;
 	height:386px;
 }
@@ -438,7 +438,7 @@ div#c-middle.developers {
 }
 
 div#c-right.partners {
-/*	background: url(/web/20160412025915im_/http://www.voiceforge.com/images/background-callout-right.gif) no-repeat 0 28px;*/
+/*	background: url(./index_files/background-callout-right.gif) no-repeat 0 28px;*/
 	width: 272px;
 	min-height: 150px;
 	float: left;
@@ -545,7 +545,7 @@ div#vfplayer{
 	border:solid 2px #3f3f3f;
 	margin:10px 60px;
 	padding:10px 0;
-	background:url(/web/20160412025915im_/http://www.voiceforge.com/images/background_orange_wstripes.jpg);
+	background:url(./index_files/background_orange_wstripes.jpg);
 }
 
 div#vfplayer div#voximg{
@@ -569,7 +569,7 @@ div#vfplayer textarea {
 
 div#vfplayer a#play {
 	float:left;
-	background:url(/web/20160412025915im_/http://www.voiceforge.com/images/PlayButton_Orange_large.jpg) no-repeat;
+	background:url(./index_files/PlayButton_Orange_large.jpg) no-repeat;
 	color:#fff00f;
 	display:block;
 	font-size:20px;

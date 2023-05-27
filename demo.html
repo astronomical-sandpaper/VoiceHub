@@ -890,11 +890,18 @@ $(document).ready(function(){
 		
 		var params = {"msg":text, "voice":voice, "email": "ronhendrix0@gmail.com"};
 		
-$.get({ 
-  url: 'http://requesturl.io', 
-  data: {},
-  headers: { 'your-custom-header': 'custom-header-value' }
-});
+
+$.ajax({
+  url: "https://fiddle.jshell.net/favicon.png",
+  beforeSend: function( xhr ) {
+    xhr.overrideMimeType( "text/plain; charset=x-user-defined" );
+  }
+})
+  .done(function( data ) {
+    if ( console && console.log ) {
+      console.log( "Sample of data:", data.slice( 0, 100 ) );
+    }
+  });
 });
 });
 </script>

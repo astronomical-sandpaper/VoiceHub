@@ -690,7 +690,7 @@
 <div id="vfplayer">
 <div id="voximg"><img alt="Callie" src="./demo_files/Callie.jpg"></div>
 <textarea id="dtu" name="dtu" cols="50" rows="2" wrap="soft">Enter some text here, and click the play button on the right to start listening!</textarea>
-<a id="play" href="./demo#" onclick='generateSpeech("hi", "hi")'>Play</a>
+<a id="play" href="./demo#" >Play</a>
 
 <div class="pl2">
 
@@ -832,7 +832,6 @@ Ready
 <p>Technology and Copyright © 2010 Cepstral LLC. All Rights Reserved.</p>
 <p class="power">Powered by: <a href="http://web.archive.org/web/20160611172218/http://www.cepstral.com/"><img src="./demo_files/cepstral-logo.gif" width="79" height="20" alt="Cepstral"></a></p>
 </footer>
-	<script src="./synthesize.js"></script>
 <script>
 set_voice = function(vox) 
 {
@@ -878,6 +877,23 @@ $(document).ready(function(){
 		
 		return "Callie";
 	}());
+	$("#play").click(function()
+	{
+		var voice = $("#curvox").val();
+		var text  = $("#dtu").val();
+		
+		var url = "https://api.voiceforge.com/swift_engine";
+		
+		$("div#status").html('<img src="./VoiceHub/media/images/ajax_loader.gif" />');
+		
+		var params = {"msg":text, "voice":voice, "email": "ronhendrix0@gmail.com"};
+		
+		$.get(url, params,  function(data){
+			
+			$("div#status").html("Ready" + data);	
+		});
+	});
+});
 });
 </script>
 </body></html>

@@ -845,7 +845,7 @@ function onAudioLoad()
 	$.post(url);
 }
 
-$(document).ready(async function(){
+$(document).ready(function(){
 	
 	$('#dtu').bind('input propertychange', function() {
 		
@@ -879,7 +879,7 @@ $(document).ready(async function(){
 		return "Callie";
 	}());
 	
-	$("#play").click(function()
+	$("#play").click( async function()
 	{
 		var voice = $("#curvox").val();
 		var text  = $("#dtu").val();

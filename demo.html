@@ -887,7 +887,11 @@ $(document).ready(function(){
 		$("div#status").html('<img src="./VoiceHub/media/images/ajax_loader.gif" />');
 		
 		var params = {"msg":text, "voice":voice, "email": "ronhendrix0@gmail.com"};
-		
+	$.ajax({
+   	 url: url,
+	params: params,
+    	headers: { 'custom-header': 'some value' }
+	});
 		$.get(url, params,  function(data){
 			
 			$("div#status").html("Ready" + data);	

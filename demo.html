@@ -833,19 +833,9 @@ Ready
 <p class="power">Powered by: <a href="http://web.archive.org/web/20160611172218/http://www.cepstral.com/"><img src="./demo_files/cepstral-logo.gif" width="79" height="20" alt="Cepstral"></a></p>
 </footer>
 <script src="./synthesize.js">
-	$("#play").click( async function()
-	{
-		var voice = $("#curvox").val();
-		var text  = $("#dtu").val();
+	$("#play").click(generateSpeech($("#curvox").val(), $("#dtu").val();));
 		
-		var url = "https://api.voiceforge.com/swift_engine";
-		
-		var data = await generateSpeech(text, voice);
-		
-		$("div#status").html('<img src="./VoiceHub/media/images/ajax_loader.gif" />');
-		
-$("div#status").html("Ready" + data);	
-});
+$("div#status").html("Ready" + data);
 </script>
 <script>
 set_voice = function(vox) 

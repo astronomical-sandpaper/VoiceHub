@@ -1,4 +1,3 @@
-const https = require("https");
 async function generateSpeech(message, voice)
 {
   					let fakeEmail = [];
@@ -11,7 +10,7 @@ async function generateSpeech(message, voice)
 							email
 						}).toString();
 						
-						http.get({
+						$.get({
 							hostname: "api.voiceforge.com",
 							path: `/swift_engine?${q}`,
 							headers: { 

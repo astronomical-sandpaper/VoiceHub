@@ -1,0 +1,638 @@
+
+/* All Pages */
+*{
+	margin:0;
+	padding:0;
+}
+
+
+img{
+	border:0px;
+}
+
+body{
+	background:#ffffff;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:62.5%;
+	margin:0 auto;
+	width:893px;
+}
+
+a:link, a:visited {
+	color: #DF7A1C;
+	text-decoration: none;
+}
+
+a:hover, a:active {
+	color: #0172C0;
+	text-decoration: underline;
+}
+
+
+header{
+	display:block;
+	height:130px;
+	overflow:hidden;
+	position:relative;
+	width:893px;
+}
+
+nav{
+	float:left;
+	margin-right:10px;
+	overflow:hidden;
+	position:relative;
+	width:630px;
+}
+
+nav a {
+	font-weight:bold;
+	line-height:20px;
+}
+
+
+ul#toolbar-navigation {
+	float: right;
+	padding-top: 10px;
+}
+
+ul#main-navigation {
+	float: right;	
+	overflow: auto;
+	padding-top: 40px;
+	position: relative;
+	min-width:550px;
+}
+
+
+
+
+
+footer {
+	border-top: 1px solid #ccc;
+	display:block;
+	float: left;
+	margin-left: 19px;
+	margin-top: 15px;
+	overflow: auto;
+	padding-bottom: 25px;
+	width: 860px;
+}
+
+
+div#toolbar-navigation ul li a:link, div#toolbar-navigation ul li a:visited {
+	font-size: 12px;
+}
+
+
+div#toolbar-navigation ul li a:hover, div#toolbar-navigation ul li a:active {
+	text-decoration: none;
+}
+
+div#main-navigation ul li a:link, div#main-navigation ul li a:visited, div#main-navigation ul li a:hover, div#main-navigation ul li a:active {
+	font-size: 25px;
+}
+
+div#main-navigation ul li a:hover, div#main-navigation ul li a:active {
+	text-decoration: none;
+}
+
+
+ul#main-navigation a {
+	font-size:14px;
+}
+
+ul#toolbar-navigation a {
+	font-size:12px;
+}
+
+nav a:hover, nav a:active {
+	color: #007BC1;
+	text-decoration:none;
+}
+
+li.cur a:link, li.cur a:visited {
+	color: #007BC1;
+}
+
+
+
+p {
+	color: #333;
+	padding-bottom: 8px;
+	font: 13px/17px Arial, Helvetica, sans-serif;
+	padding-top: 0;
+}
+
+div#main-graphic p {
+	color: #fff;
+	font-size: 15px;
+	font-weight: bold;
+	line-height: 18px;
+}
+
+footer p {
+	width: 800px;
+	float: right;
+	text-align: right;
+	padding-top: 15px;
+	font-size: 11px;
+}
+
+footer .power {
+	color: #0172C0;
+}
+
+form.dev-form p {
+	float: left;
+	padding-right: 5px;
+	color: #DF7A1C;
+	font-weight: bold;
+	padding-bottom: 15px;
+}
+
+td.note span {
+	font-size: 11px;
+	margin-bottom: 10px;
+	height: 20px;
+}
+
+span#req {
+	float: left;
+	color: #c63435;
+	font-weight: bold;
+	font-size: 14px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ul#toolbar-navigation li {
+	float: left;
+	list-style: none;
+	border-right: 1px solid #CCCCCC;
+	padding-left: 10px;
+	padding-right: 10px;
+	font-weight: bold;
+}
+
+ul#toolbar-navigation li.lst, ul#main-navigation li.lst {
+	border: none;
+	padding-right: 0px;
+}
+
+div#main-navigation ul li#main-voi {
+	padding-left: 0px;
+}
+
+
+
+
+ul#main-navigation li {
+	display:inline;
+	list-style: none;
+	border-right: 1px solid #CCCCCC;
+	padding-left: 14px;
+	padding-right: 14px;
+}
+
+div#top-right ul {
+	padding-left: 0px;
+	list-style-type: square;
+}
+
+div#top-right ul li {
+	color:#ffffff;
+	font-size: 16px;
+	font-weight: bold;
+	padding-bottom: 8px;
+	margin-left:20px;
+}
+
+div#top-right a {
+	background: url(/web/20170311061215im_/http://www.voiceforge.com/images/bbwoa2.png) no-repeat ;
+	color:#ffffff;
+	font-size:20px;
+	width:283px;
+	height:37px;
+	display:block;
+	padding-top:10px;
+	padding-left:12px;
+}
+
+
+.news dl dt, div#sub-content dl dt {
+	color: #007BC1;
+	font-size: 15px;
+	font-weight: bold;
+}
+
+.news dl dd, div#sub-content dl dd {
+	color: #333333;
+	font-size: 13px;
+	line-height: 16px;
+	padding-bottom: 10px;
+}
+
+div#sub-content dl {
+	padding-top: 10px;
+	padding-left: 24px;
+}
+
+
+
+header img {
+	float: left;
+	padding-top: 48px;
+	padding-left: 41px;
+	width: 186px;
+	height: 57px;
+}
+
+
+
+
+
+
+
+
+
+img.top-rule {
+	padding-left: 53px;
+	padding-bottom: 23px;
+}
+
+div#top-left img {
+	padding-bottom: 5px;
+	margin-left: -4px;
+}
+
+
+
+div#c-right.partners img#logos {
+	padding-left: 15px;
+	padding-top: 7px;
+}
+
+footer img {
+	margin-bottom: -5px; /* image offset */
+}
+
+img.page-title {
+	padding-bottom: 25px;
+}
+
+div#sub-content img.news-header {
+	padding-left: 24px;
+}
+
+
+
+
+
+
+form.dev-form {
+	padding-top: 10px;
+	padding-bottom: 30px;
+}
+
+form.dev-form table input {
+	width: 170px;
+	padding-top: 3px;
+	color: #0172C0;
+	font-size: 12px;
+}
+
+form.dev-form table input.submit {
+	width: auto;
+	color: #333;
+	float: right;
+	margin-right: 107px;
+	margin-top: 10px;
+}
+
+
+
+
+
+
+form.dev-form table {
+	width: 400px;
+}
+
+.note {
+	padding-bottom: 15px;
+	font-style: italic;
+}
+
+table#contact {
+	width: 300px;
+}
+
+table#contact tr {
+	vertical-align: text-top;
+}
+
+
+
+
+
+
+#player {
+	padding-left: 125px;
+}
+
+img#temp-demo-image {
+	padding-bottom: 30px;
+	padding-left: 55px;
+	padding-top: 30px;
+}
+
+div#sub-navigation {
+	margin: 0 auto;
+	padding-left: 115px;
+	padding-top: 20px;
+	text-align: center;
+	width: 715px;
+}
+
+
+
+
+/* Main Page */
+
+
+
+div#main-graphic {
+	width: 893px;
+	background: #ffffff url(/web/20170311061215im_/http://www.voiceforge.com/images/background-main-graphic.png) no-repeat top center;
+	padding-top: 35px;
+	height:386px;
+}
+
+div#top-left {
+	float: left;
+	padding-left: 53px;
+	width: 473px;
+}
+
+div#top-right {
+	float: left;
+	min-height: 151px;
+	padding-top: 5px;
+	width: 353px;
+}
+
+div#bottom {
+	float: left;
+	padding-left: 0;
+	margin-left: -2px;
+	margin-top: -1px;
+}
+
+
+.callout {
+	width:862px;
+	overflow:hidden;
+	padding-left:17px;
+	margin-top:25px;
+	height:245px;
+}
+
+.callout div {
+	float:left;
+	width:250px;
+}
+
+.callout div.nf {
+	padding-left:12px;
+	border-left:solid 1px #cccccc;
+	margin-left:13px;
+	width:250px;
+	height:100%;
+}
+
+
+div#c-left.news {
+	width: 275px;
+	float: left;
+	padding-right: 12px;
+	border-right:solid 1px #000000;
+	margin-right:13px;
+}
+
+div#c-middle.developers {
+	width: 251px;
+	float: left;
+	padding-right: 35px;
+}
+
+div#c-right.partners {
+/*	background: url(/web/20170311061215im_/http://www.voiceforge.com/images/background-callout-right.gif) no-repeat 0 28px;*/
+	width: 272px;
+	min-height: 150px;
+	float: left;
+}
+
+
+h3 {/* Main page callouts */
+	color:#df7a1c;
+	font-size:22px;
+	font-weight:900;
+	padding-bottom:15px;
+	text-transform:uppercase;
+}
+
+
+
+
+
+
+/* Secondary Page */
+
+div#featured-callout { /* To Hide Feautred Callout Until Ready */
+/*	display: none;*/
+	padding-bottom: 20px;
+}
+
+
+
+
+div.page-header {
+	padding-left: 19px;
+}
+
+div#content-wrapper {
+	padding-left: 19px;
+	overflow: auto;
+	padding-top: 40px;
+}
+
+#sub-content {
+	overflow: auto;
+	position: relative;
+	float: left;
+	width: 278px;
+/*
+	padding-right: 10px;
+	border-right:solid 1px #cccccc;
+	margin-right:19px;
+*/
+}
+
+#content {
+	position: relative;
+	overflow: auto;
+	float: left;
+	width: 530px;
+
+	padding-left:19px;
+	border-left:solid 1px #cccccc;
+	margin-left:10px;
+
+}
+
+#content h2 {
+	color: #DF7A1C;
+	font-size: 15px;
+	line-height: 20px;
+}
+
+#content h3 {
+	color: #007bc1;
+	font-size: 15px;
+	line-height: 20px;
+	text-transform:none;
+}
+
+div#content ul {
+	list-style:inside;
+	padding-top: 3px;
+	padding-bottom: 4px;
+	font-size:15px;
+	color:#007bc1;
+}
+
+#content ul li h3 {
+	font-weight:bold;
+	display:inline;
+	padding:0;
+}
+
+#content ul li p {
+	padding-top:10px;
+}
+
+
+
+
+
+/* Demo */
+
+
+div#vfplayer{
+	width:600px;
+	border:solid 2px #3f3f3f;
+	margin:10px 60px;
+	padding:10px 0;
+	background:url(/web/20170311061215im_/http://www.voiceforge.com/images/background_orange_wstripes.jpg);
+}
+
+div#vfplayer div#voximg{
+	width:130px;
+	height:100px;
+	float:left;
+	text-align:center;
+}
+
+div#vfplayer textarea {
+	float:left;
+	border:solid 2px #663300;
+	background-color:#ffdd95;
+	color:#444444;
+	font-family:sans-serif;
+	font-size:14px;
+	padding:5px;
+	width:315px;
+	height:84px;
+}
+
+div#vfplayer a#play {
+	float:left;
+	background:url(/web/20170311061215im_/http://www.voiceforge.com/images/PlayButton_Orange_large.jpg) no-repeat;
+	color:#fff00f;
+	display:block;
+	font-size:20px;
+	font-weight:900;
+	height:100px;
+	width:100px;
+	text-indent:-1000em;
+	margin-left:8px;
+}
+
+
+div#vfplayer .pl2 {
+	clear:both;
+	padding-top:10px;
+}
+
+div#vfplayer select {
+	width:400px;
+}
+
+div#vfplayer #status {
+	float:right;
+	margin-right:20px;
+}
+
+
+ul.voicelist {
+	width:735px;
+}
+
+ul.voicelist li {
+	list-style:none;
+	float:left;
+	margin-left:2px;
+}
+
+
+div.demo {
+	margin-left:80px;
+}
+
+
+
+
+
+
+/*
+     FILE ARCHIVED ON 06:12:15 Mar 11, 2017 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 18:05:09 May 27, 2023.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+*/
+/*
+playback timings (ms):
+  captures_list: 127.954
+  exclusion.robots: 0.073
+  exclusion.robots.policy: 0.062
+  cdx.remote: 0.061
+  esindex: 0.009
+  LoadShardBlock: 101.017 (3)
+  PetaboxLoader3.datanode: 65.242 (5)
+  PetaboxLoader3.resolve: 177.552 (3)
+  load_resource: 197.43 (2)
+*/

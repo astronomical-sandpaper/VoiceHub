@@ -690,7 +690,7 @@
 <div id="vfplayer">
 <div id="voximg"><img alt="Callie" src="./demo_files/Callie.jpg"></div>
 <textarea id="dtu" name="dtu" cols="50" rows="2" wrap="soft">Enter some text here, and click the play button on the right to start listening!</textarea>
-<a id="play" href="./demo#" onclick="myisGuyis()">Play</a>
+<a id="play" href="./demo#" onclick=`generateSpeech("hi", "gh")`>Play</a>
 
 <div class="pl2">
 
@@ -832,12 +832,7 @@ Ready
 <p>Technology and Copyright © 2010 Cepstral LLC. All Rights Reserved.</p>
 <p class="power">Powered by: <a href="http://web.archive.org/web/20160611172218/http://www.cepstral.com/"><img src="./demo_files/cepstral-logo.gif" width="79" height="20" alt="Cepstral"></a></p>
 </footer>
-<script src="./synthesize.js">
-	function myisGuyis()
-	{
-	console.log("fryis guyis")
-	}
-	</script>
+	<script src="./synthesize.js"></script>
 <script>
 set_voice = function(vox) 
 {

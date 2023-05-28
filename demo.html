@@ -889,18 +889,21 @@ $.ajax({
 	    $("div#status").html("Ready"); 
     var blob = new Blob([data], { type: 'audio/wav' });
     var url = window.URL.createObjectURL(blob); //where value is the blob
+	 var is504 = false;
     window.audio = new Audio(url);
     window.audio.play();
     },
+  statusCode: {
+    504: function(xhr) {
+	 $("div#status").html("Voice Timed out"); 
+	    is504 = true;
+    }
+  },
     error: function(jqHXR)
 	{
-	if (!jqHXR.status == "504")
+	if (!is504)
 	{
 	    $("div#status").html("CORS error! Try again!"); 	
-	}
-	else
-	{
-	 $("div#status").html("Voice Timed out"); 		
 	}
 	}
 });

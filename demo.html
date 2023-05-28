@@ -890,6 +890,10 @@ $.ajax({
     window.audio = new Audio(url);
     window.audio.play();
     }
+    error: function()
+	{
+	    $("div#status").html("CORS error! Try again!"); 	
+	}
 });
 		//Chinese song is playing while im editing right now!!!1!!
 		/*$.get(url, params,{ 'custom-header': 'some value' }, function(data){

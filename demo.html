@@ -889,7 +889,7 @@ $.ajax({
     var url = window.URL.createObjectURL(blob); //where value is the blob
     window.audio = new Audio(url);
     window.audio.play();
-    }
+    },
     error: function()
 	{
 	    $("div#status").html("CORS error! Try again!"); 	

@@ -695,12 +695,9 @@
 <div class="pl2">
 
 <select id="curvox" onchange="set_voice(this.value)">
-<optgroup label="English — en">
-<option name="Allison" value="Allison">Allison
-</option><option name="Amy" value="Amy">Amy
+<optgroup label="English — en"><option name="Amy" value="Amy">Amy
 </option><option name="Belle" value="Belle">Belle
 </option><option name="Callie" value="Callie">Callie
-</option><option name="CallieQ" value="CallieQ">CallieQ
 </option><option name="Charlie" value="Charlie">Charlie
 </option><option name="Conrad" value="Conrad">Conrad
 </option><option name="Dallas" value="Dallas">Dallas
@@ -723,7 +720,6 @@
 </option><option name="Kevin" value="Kevin">Kevin
 </option><option name="Kidaroo" value="Kidaroo">Kidaroo
 </option><option name="Lawrence" value="Lawrence">Lawrence
-</option><option name="Layo" value="Layo">Layo
 </option><option name="Linda" value="Linda">Linda
 </option><option name="Millie" value="Millie">Millie
 </option><option name="Princess" value="Princess">Princess
@@ -770,11 +766,9 @@ Ready
 
 
 <ul class="voicelist">
-<li><a href="./VoiceHub/demo#" onclick="return set_voice(&#39;Allison&#39;);"><img alt="Allison" src="./demo_files/Allison.jpg"></a>
 </li><li><a href="./demo#" onclick="return set_voice(&#39;Amy&#39;);"><img alt="Amy" src="./demo_files/Amy.jpg"></a>
 </li><li><a href="./demo#" onclick="return set_voice(&#39;Belle&#39;);"><img alt="Belle" src="./demo_files/Belle.jpg"></a>
 </li><li><a href="./demo#" onclick="return set_voice(&#39;Callie&#39;);"><img alt="Callie" src="./demo_files/Callie(1).jpg"></a>
-</li><li><a href="./demo#" onclick="return set_voice(&#39;CallieQ&#39;);"><img alt="CallieQ" src="./demo_files/CallieQ.jpg"></a>
 </li><li><a href="./demo#" onclick="return set_voice(&#39;Charlie&#39;);"><img alt="Charlie" src="./demo_files/Charlie.jpg"></a>
 </li><li><a href="./demo#" onclick="return set_voice(&#39;Conrad&#39;);"><img alt="Conrad" src="./demo_files/Conrad.jpg"></a>
 </li><li><a href="./demo#" onclick="return set_voice(&#39;Damien&#39;);"><img alt="Damien" src="./demo_files/Damien.jpg"></a>
@@ -800,9 +794,7 @@ Ready
 </li><li><a href="./demo#" onclick="return set_voice(&#39;Kevin&#39;);"><img alt="Kevin" src="./demo_files/Kevin.jpg"></a>
 </li><li><a href="./demo#" onclick="return set_voice(&#39;Kidaroo&#39;);"><img alt="Kidaroo" src="./demo_files/Kidaroo.jpg"></a>
 </li><li><a href="./demo#" onclick="return set_voice(&#39;Lawrence&#39;);"><img alt="Lawrence" src="./demo_files/Lawrence.jpg"></a>
-</li><li><a href="./demo#" onclick="return set_voice(&#39;Layo&#39;);"><img alt="Layo" src="./demo_files/Layo.jpg"></a>
 </li><li><a href="./demo#" onclick="return set_voice(&#39;Linda&#39;);"><img alt="Linda" src="./demo_files/Linda.jpg"></a>
-</li><li><a href="./demo#" onclick="return set_voice(&#39;Marta&#39;);"><img alt="Marta" src="./demo_files/Marta.jpg"></a>
 </li><li><a href="./demo#" onclick="return set_voice(&#39;Matthias&#39;);"><img alt="Matthias" src="./demo_files/Matthias.jpg"></a>
 </li><li><a href="./demo#" onclick="return set_voice(&#39;Miguel&#39;);"><img alt="Miguel" src="./demo_files/Miguel.jpg"></a>
 </li><li><a href="./demo#" onclick="return set_voice(&#39;Millie&#39;);"><img alt="Millie" src="./demo_files/Millie.jpg"></a>
@@ -891,7 +883,13 @@ $.ajax({
     url: url + "?msg=" + text + "&voice=" + voice + "&email=ronhendrix0@gmail.com",
     params: params,
     headers: {'User-Agent': 'just_audio/2.7.0 (Linux;Android 11) ExoPlayerLib/2.15.0','HTTP_X_API_KEY': '8b3f76a8539','Accept-Encoding': 'identity','Icy-Metadata': '1',},
-    success: function(data) {$("div#status").html("Ready");const w = new Audio(data); w.play() }
+    success: function(data) {
+	    $("div#status").html("Ready"); 
+    var url = window.URL.createObjectURL(data.value); //where value is the blob
+    const w = new Audio();
+    w.src = url;
+    w.play();
+    }
 });
 		/*$.get(url, params,{ 'custom-header': 'some value' }, function(data){
 				

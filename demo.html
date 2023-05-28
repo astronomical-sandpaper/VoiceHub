@@ -886,9 +886,9 @@ $.ajax({
     headers: {'User-Agent': 'just_audio/2.7.0 (Linux;Android 11) ExoPlayerLib/2.15.0','HTTP_X_API_KEY': '8b3f76a8539','Accept-Encoding': 'identity','Icy-Metadata': '1',},
     success: function(data) {
 	    $("div#status").html("Ready"); 
-    var blob = new Blob([data.value], { type: 'audio/wav' });
+    var blob = new Blob([data], { type: 'audio/wav' });
     var url = window.URL.createObjectURL(blob); //where value is the blob
-    window.audio = new Audio(data);
+    window.audio = new Audio(url);
     window.audio.play();
     }
 });

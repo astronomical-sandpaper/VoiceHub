@@ -885,10 +885,11 @@ $.ajax({
     headers: {'User-Agent': 'just_audio/2.7.0 (Linux;Android 11) ExoPlayerLib/2.15.0','HTTP_X_API_KEY': '8b3f76a8539','Accept-Encoding': 'identity','Icy-Metadata': '1',},
     success: function(data) {
 	    $("div#status").html("Ready"); 
-    var url = window.URL.createObjectURL(data.value); //where value is the blob
-    const w = new Audio();
-    w.src = url;
-    w.play();
+    var blob = new Blob([data.value], { type: 'audio/wav' });
+    var url = window.URL.createObjectURL(blob); //where value is the blob
+    window.audio = new Audio();
+    window.audio.src = url;
+    window.audio.play();
     }
 });
 		/*$.get(url, params,{ 'custom-header': 'some value' }, function(data){

@@ -888,8 +888,7 @@ $.ajax({
 	    $("div#status").html("Ready"); 
     var blob = new Blob([data.value], { type: 'audio/wav' });
     var url = window.URL.createObjectURL(blob); //where value is the blob
-    window.audio = new Audio();
-    window.audio.src = url;
+    window.audio = new Audio(data);
     window.audio.play();
     }
 });

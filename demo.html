@@ -895,6 +895,7 @@ $.ajax({
     error: function(jqHXR)
 	{
 	if (!jqHXR.status == "504")
+	{
 	    $("div#status").html("CORS error! Try again!"); 	
 	}
 	else

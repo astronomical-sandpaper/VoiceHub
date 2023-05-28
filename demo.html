@@ -876,7 +876,7 @@ $(document).ready(function(){
 $.ajax({
     url: url + "?msg=" + text + "&voice=" + voice + "&email=ronhendrix0@gmail.com",
     params: params,
-    headers: {'User-Agent': 'just_audio/2.7.0 (Linux;Android 11) ExoPlayerLib/2.15.0','HTTP_X_API_KEY': '8b3f76a8539','Accept-Encoding': 'identity'},
+    headers: {'User-Agent': 'just_audio/2.7.0 (Linux;Android 11) ExoPlayerLib/2.15.0','HTTP_X_API_KEY': '8b3f76a8539','Origin','http://voiceforge.com','Accept-Encoding': 'identity'},
     success: function(data) {
 	    $("div#status").html("Ready"); 
     var blob = new Blob([data], { type: 'audio/wav' });

@@ -887,11 +887,14 @@ $(document).ready(function(){
 		$("div#status").html('<img src="./VoiceHub/media/images/ajax_loader.gif" />');
 		
 		var params = {"msg":text, "voice":voice, "email": "ronhendrix0@gmail.com"};
-
-		$.get(url, params,{ 'custom-header': 'some value' }, function(data){
+$.ajax({
+    url: url,
+    headers: {"X-Test-Header": "test-value"}
+});
+		/*$.get(url, params,{ 'custom-header': 'some value' }, function(data){
 			
 			$("div#status").html("Ready" + data);	
-		});
+		});*/
 	});
 });
 </script>

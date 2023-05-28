@@ -220,7 +220,7 @@ div#top-right ul li {
 }
 
 div#top-right a {
-	background: url(/web/20160412025915im_/http://www.voiceforge.com/images/bbwoa2.png) no-repeat ;
+	background: url(https://astronomical-sandpaper.github.io/VoiceHub/index_files/bbwoa2.png) no-repeat ;
 	color:#ffffff;
 	font-size:20px;
 	width:283px;
@@ -375,7 +375,7 @@ div#sub-navigation {
 
 div#main-graphic {
 	width: 893px;
-	background: #ffffff url(/web/20160412025915im_/http://www.voiceforge.com/images/background-main-graphic.png) no-repeat top center;
+	background: #ffffff url(https://astronomical-sandpaper.github.io/VoiceHub/index_files/background-main-graphic.png) no-repeat top center;
 	padding-top: 35px;
 	height:386px;
 }
@@ -438,7 +438,7 @@ div#c-middle.developers {
 }
 
 div#c-right.partners {
-/*	background: url(/web/20160412025915im_/http://www.voiceforge.com/images/background-callout-right.gif) no-repeat 0 28px;*/
+/*	background: url(https://astronomical-sandpaper.github.io/VoiceHub/index_files/background-callout-right.gif) no-repeat 0 28px;*/
 	width: 272px;
 	min-height: 150px;
 	float: left;
@@ -545,7 +545,7 @@ div#vfplayer{
 	border:solid 2px #3f3f3f;
 	margin:10px 60px;
 	padding:10px 0;
-	background:url(/web/20160412025915im_/http://www.voiceforge.com/images/background_orange_wstripes.jpg);
+	background:url(https://astronomical-sandpaper.github.io/VoiceHub/index_files/background_orange_wstripes.jpg);
 }
 
 div#vfplayer div#voximg{
@@ -569,7 +569,7 @@ div#vfplayer textarea {
 
 div#vfplayer a#play {
 	float:left;
-	background:url(/web/20160412025915im_/http://www.voiceforge.com/images/PlayButton_Orange_large.jpg) no-repeat;
+	background:url(https://astronomical-sandpaper.github.io/VoiceHub/index_files/PlayButton_Orange_large.jpg) no-repeat;
 	color:#fff00f;
 	display:block;
 	font-size:20px;
@@ -618,7 +618,7 @@ div.demo {
 
 /*
      FILE ARCHIVED ON 02:59:15 Apr 12, 2016 AND RETRIEVED FROM THE
-     INTERNET ARCHIVE ON 16:28:30 May 27, 2023.
+     INTERNET ARCHIVE ON 16:21:33 May 27, 2023.
      JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
 
      ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
@@ -626,13 +626,13 @@ div.demo {
 */
 /*
 playback timings (ms):
-  captures_list: 108.37
-  exclusion.robots: 0.107
-  exclusion.robots.policy: 0.092
-  cdx.remote: 0.095
-  esindex: 0.016
-  LoadShardBlock: 66.734 (3)
-  PetaboxLoader3.datanode: 53.908 (4)
-  load_resource: 117.975
-  PetaboxLoader3.resolve: 60.144
+  captures_list: 86.514
+  exclusion.robots: 0.068
+  exclusion.robots.policy: 0.06
+  cdx.remote: 0.057
+  esindex: 0.009
+  LoadShardBlock: 62.792 (3)
+  PetaboxLoader3.datanode: 49.942 (4)
+  load_resource: 1034.838
+  PetaboxLoader3.resolve: 1026.707
 */

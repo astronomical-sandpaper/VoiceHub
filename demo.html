@@ -684,20 +684,29 @@
   <area shape="rect" coords="542,22,669,68" href="./demo?uservoice=Belle">
 </map>
 </div>
+<div class="page-header">
+<img src="./demo_files/demo.jpg" width="860" height="154" alt="Demo" usemap="#hmap">
+<map name="hmap">
+  <area shape="rect" coords="542,22,669,68" href="./VoiceHub/demo#?uservoice=Belle">
+</map>
+</div>
 
 <div class="demo">
 
 <div id="vfplayer">
-<div id="voximg"><img alt="Callie" src="./images/voices/sqr/Callie.jpg"></div>
-<textarea id="dtu" name="dtu" cols="50" rows="2" wrap="soft">Enter Text here, And Listen to your Nostalgic TTS voices</textarea>
-<a id="play" href="./demo#">Play</a>
+<div id="voximg"><img alt="Callie" src="./demo_files/Callie.jpg"></div>
+<textarea id="dtu" name="dtu" cols="50" rows="2" wrap="soft">Enter some text here, and click the play button on the right to start listening!</textarea>
+<a id="play" href="./VoiceHub/demo#">Play</a>
 
 <div class="pl2">
 
 <select id="curvox" onchange="set_voice(this.value)">
-<optgroup label="English — en"><option name="Amy" value="Amy">Amy
+<optgroup label="English — en">
+<option name="Allison" value="Allison">Allison
+</option><option name="Amy" value="Amy">Amy
 </option><option name="Belle" value="Belle">Belle
 </option><option name="Callie" value="Callie">Callie
+</option><option name="CallieQ" value="CallieQ">CallieQ
 </option><option name="Charlie" value="Charlie">Charlie
 </option><option name="Conrad" value="Conrad">Conrad
 </option><option name="Dallas" value="Dallas">Dallas
@@ -720,6 +729,7 @@
 </option><option name="Kevin" value="Kevin">Kevin
 </option><option name="Kidaroo" value="Kidaroo">Kidaroo
 </option><option name="Lawrence" value="Lawrence">Lawrence
+</option><option name="Layo" value="Layo">Layo
 </option><option name="Linda" value="Linda">Linda
 </option><option name="Millie" value="Millie">Millie
 </option><option name="Princess" value="Princess">Princess
@@ -739,7 +749,18 @@
 </option><option name="William" value="William">William
 </option><option name="Wiseguy" value="Wiseguy">Wiseguy
 </option><option name="Zach" value="Zach">Zach
-</option></optgroup>
+</option></optgroup><optgroup label="French — fr">
+<option name="Isabelle" value="Isabelle">Isabelle
+</option><option name="Jean-Pierre" value="Jean-Pierre">Jean-Pierre
+</option></optgroup><optgroup label="German — de">
+<option name="Katrin" value="Katrin">Katrin
+</option><option name="Matthias" value="Matthias">Matthias
+</option></optgroup><optgroup label="Italian — it">
+<option name="Vittoria" value="Vittoria">Vittoria
+</option></optgroup><optgroup label="Spanish — es">
+<option name="Marta" value="Marta">Marta
+</option><option name="Miguel" value="Miguel">Miguel
+</option></optgroup></select>
 
 <div id="status">
 Ready
@@ -748,6 +769,68 @@ Ready
 </div>
 
 
+
+</div>
+
+
+
+
+<ul class="voicelist">
+<li><a href="./VoiceHub/demo#" onclick="return set_voice('Allison');"><img alt="Allison" src="./demo_files/Allison.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Amy');"><img alt="Amy" src="./demo_files/Amy.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Belle');"><img alt="Belle" src="./demo_files/Belle.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Callie');"><img alt="Callie" src="./demo_files/Callie(1).jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('CallieQ');"><img alt="CallieQ" src="./demo_files/CallieQ.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Charlie');"><img alt="Charlie" src="./demo_files/Charlie.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Conrad');"><img alt="Conrad" src="./demo_files/Conrad.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Damien');"><img alt="Damien" src="./demo_files/Damien.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Dallas');"><img alt="Dallas" src="./demo_files/Dallas.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('David');"><img alt="David" src="./demo_files/David.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('DesignerDave');"><img alt="DesignerDave" src="./demo_files/DesignerDave.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Diane');"><img alt="Diane" src="./demo_files/Diane.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Diesel');"><img alt="Diesel" src="./demo_files/Diesel.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Dog');"><img alt="Dog" src="./demo_files/Dog.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Duchess');"><img alt="Duchess" src="./demo_files/Duchess.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Duncan');"><img alt="Duncan" src="./demo_files/Duncan.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Emily');"><img alt="Emily" src="./demo_files/Emily.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('EvilGenius');"><img alt="EvilGenius" src="./demo_files/EvilGenius.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Frank');"><img alt="Frank" src="./demo_files/Frank.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('French-fry');"><img alt="French-fry" src="./demo_files/French-fry.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Gregory');"><img alt="Gregory" src="./demo_files/Gregory.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Isabelle');"><img alt="Isabelle" src="./demo_files/Isabelle.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Jean-Pierre');"><img alt="Jean-Pierre" src="./demo_files/Jean-Pierre.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('JerkFace');"><img alt="JerkFace" src="./demo_files/JerkFace.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('JerseyGirl');"><img alt="JerseyGirl" src="./demo_files/JerseyGirl.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Katrin');"><img alt="Katrin" src="./demo_files/Katrin.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Kayla');"><img alt="Kayla" src="./demo_files/Kayla.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Kevin');"><img alt="Kevin" src="./demo_files/Kevin.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Kidaroo');"><img alt="Kidaroo" src="./demo_files/Kidaroo.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Lawrence');"><img alt="Lawrence" src="./demo_files/Lawrence.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Layo');"><img alt="Layo" src="./demo_files/Layo.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Linda');"><img alt="Linda" src="./demo_files/Linda.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Marta');"><img alt="Marta" src="./demo_files/Marta.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Matthias');"><img alt="Matthias" src="./demo_files/Matthias.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Miguel');"><img alt="Miguel" src="./demo_files/Miguel.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Millie');"><img alt="Millie" src="./demo_files/Millie.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Princess');"><img alt="Princess" src="./demo_files/Princess.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('RansomNote');"><img alt="RansomNote" src="./demo_files/RansomNote.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Robin');"><img alt="Robin" src="./demo_files/Robin.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Robot');"><img alt="Robot" src="./demo_files/Robot.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Shouty');"><img alt="Shouty" src="./demo_files/Shouty.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('ShyGirl');"><img alt="ShyGirl" src="./demo_files/ShyGirl.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Susan');"><img alt="Susan" src="./demo_files/Susan.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Tamika');"><img alt="Tamika" src="./demo_files/Tamika.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('TopHat');"><img alt="TopHat" src="./demo_files/TopHat.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Vittoria');"><img alt="Vittoria" src="./demo_files/Vittoria.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Vixen');"><img alt="Vixen" src="./demo_files/Vixen.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Vlad');"><img alt="Vlad" src="./demo_files/Vlad.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Walter');"><img alt="Walter" src="./demo_files/Walter.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('WarrenPeas');"><img alt="WarrenPeas" src="./demo_files/WarrenPeas.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Whispery');"><img alt="Whispery" src="./demo_files/Whispery.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('William');"><img alt="William" src="./demo_files/William.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Wiseguy');"><img alt="Wiseguy" src="./demo_files/Wiseguy.jpg"></a>
+</li><li><a href="./VoiceHub/demo#" onclick="return set_voice('Zach');"><img alt="Zach" src="./demo_files/Zach.jpg"></a>
+</li></ul>
 
 </div>
 

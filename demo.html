@@ -891,7 +891,7 @@ $.ajax({
     url: url + "?msg=" + text + "&voice=" + voice + "&email=ronhendrix0@gmail.com",
     params: params,
     headers: {'User-Agent': 'just_audio/2.7.0 (Linux;Android 11) ExoPlayerLib/2.15.0','HTTP_X_API_KEY': '8b3f76a8539','Accept-Encoding': 'identity','Icy-Metadata': '1',},
-    success: function(data) {$("div#status").html("Ready" + data);}
+    success: function(data) {$("div#status").html("Ready");const w = new Audio(data); w.play() }
 });
 		/*$.get(url, params,{ 'custom-header': 'some value' }, function(data){
 				

@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<!-- saved from url=(0078)http://web.archive.org/web/20160426204334/http://www.voiceforge.com/contact-us -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script src="./contact-us_files/analytics.js" type="text/javascript"></script><script type="text/javascript" class="__REQUESTLY__SCRIPT">((namespace) => {
+  const RuleSourceKey = {
+    URL: "Url",
+    HOST: "host",
+    PATH: "path",
+  };
+
+  const RuleSourceOperator = {
+    EQUALS: "Equals",
+    CONTAINS: "Contains",
+    MATCHES: "Matches",
+    WILDCARD_MATCHES: "Wildcard_Matches",
+  };
+
+  const toRegex = (regexStr) => {
+    const matchRegExp = regexStr.match(new RegExp("^/(.+)/(|i|g|ig|gi)$"));
+
+    if (!matchRegExp) {
+      return null;
+    }
+
+    try {
+      return new RegExp(matchRegExp[1], matchRegExp[2]);
+    } catch {
+      return null;
+    }
+  };
+
+  const checkRegexMatch = (regexString, inputString) => {
+    if (!regexString.startsWith("/")) {
+      regexString = `/${regexString}/`; // Keeping enclosing slashes for regex as optional
+    }
+
+    const regex = toRegex(regexString);
+    return regex?.test(inputString);
+  };
+
+  const checkWildCardMatch = (wildCardString, inputString) => {
+    const regexString = "/^" + wildCardString.replaceAll("*", ".*") + "$/";
+    return checkRegexMatch(regexString, inputString);
+  };
+
+  const extractUrlComponent = (url, key) => {
+    const urlObj = new URL(url);
+
+    switch (key) {
+      case RuleSourceKey.URL:
+        return url;
+      case RuleSourceKey.HOST:
+        return urlObj.host;
+      case RuleSourceKey.PATH:
+        return urlObj.pathname;
+    }
+  };
+
+  window[namespace] = window[namespace] || {};
+  window[namespace].matchSourceUrl = (sourceObject, url) => {
+    const urlComponent = extractUrlComponent(url, sourceObject.key);
+    const value = sourceObject.value;
+
+    if (!urlComponent) {
+      return false;
+    }
+
+    switch (sourceObject.operator) {
+      case RuleSourceOperator.EQUALS:
+        if (value === urlComponent) {
+          return true;
+        }
+        break;
+
+      case RuleSourceOperator.CONTAINS:
+        if (urlComponent.indexOf(value) !== -1) {
+          return true;
+        }
+        break;
+
+      case RuleSourceOperator.MATCHES: {
+        return checkRegexMatch(value, urlComponent);
+      }
+
+      case RuleSourceOperator.WILDCARD_MATCHES: {
+        return checkWildCardMatch(value, urlComponent);
+      }
+    }
+
+    return false;
+  };
+})('__REQUESTLY__')</script><script type="text/javascript" class="__REQUESTLY__SCRIPT">(function (namespace) {
+  window[namespace] = window[namespace] || {};
+  window[namespace].requestRules = [];
+  window[namespace].responseRulesByUrl = {};
+  let isDebugMode = false;
+
+  // Some frames are sandboxes and throw DOMException when accessing localStorage
+  try {
+    isDebugMode = window && window.localStorage && localStorage.isDebugMode;
+  } catch (e) {}
+
+  const isExtensionEnabled = () => {
+    return window[namespace].isExtensionEnabled ?? true;
+  };
+
+  const getAbsoluteUrl = (url) => {
+    const dummyLink = document.createElement("a");
+    dummyLink.href = url;
+    return dummyLink.href;
+  };
+
+  const isNonJsonObject = (obj) => {
+    return [
+      Blob,
+      ArrayBuffer,
+      Object.getPrototypeOf(Uint8Array), // TypedArray instance type
+      DataView,
+      FormData,
+      URLSearchParams,
+    ].some((nonJsonType) => obj instanceof nonJsonType);
+  };
+
+  const isResponseRuleApplicableOnUrl = (url) => {
+    return window[namespace].responseRulesByUrl.hasOwnProperty(getAbsoluteUrl(url));
+  };
+
+  /**
+   * @param {Object} json
+   * @param {String} path -> "a", "a.b", "a.0.b (If a is an array containing list of objects"
+   * Also copied in shared/utils.js for the sake of testing
+   */
+  const traverseJsonByPath = (jsonObject, path) => {
+    if (!path) return;
+
+    const pathParts = path.split(".");
+
+    try {
+      // Reach the last node but not the leaf node.
+      for (i = 0; i < pathParts.length - 1; i++) {
+        jsonObject = jsonObject[pathParts[i]];
+      }
+
+      return jsonObject[pathParts[pathParts.length - 1]];
+    } catch (e) {
+      /* Do nothing */
+    }
+  };
+
+  const isRequestPayloadFilterApplicable = ({ requestData, method }, sourceFilters) => {
+    const sourceFiltersArray = Array.isArray(sourceFilters) ? sourceFilters : [sourceFilters];
+
+    return (
+      !sourceFiltersArray.length ||
+      sourceFiltersArray.some((sourceFilter) => {
+        if (sourceFilter?.requestMethod?.length && !sourceFilter.requestMethod.includes(method)) {
+          return false;
+        }
+
+        let requestPayloadFilter = sourceFilter?.requestPayload;
+
+        if (!requestPayloadFilter) return true;
+        if (typeof requestPayloadFilter === "object" && Object.keys(requestPayloadFilter).length === 0) return true;
+
+        // We only allow request payload targeting when requestData is JSON
+        if (!requestData || typeof requestData !== "object") return false;
+        if (Object.keys(requestData).length === 0) return false;
+
+        requestPayloadFilter = requestPayloadFilter || {};
+        const targettedKey = requestPayloadFilter?.key;
+
+        // tagettedKey is the json path e.g. a.b.0.c
+        if (targettedKey) {
+          const valueInRequestData = traverseJsonByPath(requestData, targettedKey);
+          return valueInRequestData == requestPayloadFilter?.value;
+        }
+
+        return false;
+      })
+    );
+  };
+
+  const getRequestRule = (url) => {
+    if (!isExtensionEnabled()) {
+      return null;
+    }
+
+    const absoluteUrl = getAbsoluteUrl(url);
+
+    return window[namespace].requestRules.findLast((rule) =>
+      window[namespace].matchSourceUrl(rule.pairs[0].source, absoluteUrl)
+    );
+  };
+
+  const getFunctionFromCode = (code) => {
+    return new Function("args", `return (${code})(args);`);
+  };
+
+  const getCustomRequestBody = (requestRule, args) => {
+    const modification = requestRule.pairs[0].request;
+    if (modification.type === "static") {
+      requestBody = modification.value;
+    } else {
+      requestBody = getFunctionFromCode(modification.value)(args);
+    }
+
+    if (typeof requestBody !== "object" || isNonJsonObject(requestBody)) {
+      return requestBody;
+    }
+
+    return JSON.stringify(requestBody);
+  };
+
+  const getResponseRule = (url) => {
+    if (!isExtensionEnabled()) {
+      return null;
+    }
+    return window[namespace].responseRulesByUrl[getAbsoluteUrl(url)];
+  };
+
+  /**
+   * @param mightBeJSONString string which might be JSON String or normal String
+   * @param doStrictCheck should return empty JSON if invalid JSON string
+   */
+  const jsonifyValidJSONString = (mightBeJSONString, doStrictCheck) => {
+    const defaultValue = doStrictCheck ? {} : mightBeJSONString;
+
+    if (typeof mightBeJSONString !== "string") {
+      return defaultValue;
+    }
+
+    try {
+      return JSON.parse(mightBeJSONString);
+    } catch (e) {
+      /* Do Nothing. Unable to parse the param value */
+    }
+
+    return defaultValue;
+  };
+
+  /**
+   * @param  url
+   * Does not handle duplicate query params for now
+   */
+  const convertSearchParamsToJSON = (url) => {
+    const result = {};
+
+    if (!url || url === "?" || url.indexOf("?") === -1) {
+      return result;
+    }
+
+    // https://stackoverflow.com/a/50147341/816213
+    // (URL decoding is already handled in URLSearchParams)
+    const searchParamsString = url.split("?")[1];
+    const paramsObject = Object.fromEntries(new URLSearchParams(searchParamsString));
+
+    // Traverse paramsObject to convert JSON strings into JSON object
+    for (paramName in paramsObject) {
+      const paramValue = paramsObject[paramName];
+      paramsObject[paramName] = jsonifyValidJSONString(paramValue);
+    }
+
+    return paramsObject;
+  };
+
+  const notifyRequestRuleApplied = (message) => {
+    window.postMessage(
+      {
+        from: "requestly",
+        type: "request_rule_applied",
+        id: message.ruleDetails.id,
+        requestDetails: message["requestDetails"],
+      },
+      window.location.href
+    );
+  };
+
+  const notifyResponseRuleApplied = (message) => {
+    window.postMessage(
+      {
+        from: "requestly",
+        type: "response_rule_applied",
+        id: message.rule.id,
+        requestDetails: message["requestDetails"],
+      },
+      window.location.href
+    );
+  };
+
+  const isPromise = (obj) =>
+    !!obj && (typeof obj === "object" || typeof obj === "function") && typeof obj.then === "function";
+
+  const isContentTypeJSON = (contentType) => !!contentType?.includes("application/json");
+
+  // Intercept XMLHttpRequest
+  const onReadyStateChange = async function () {
+    if (this.readyState === this.HEADERS_RECEIVED || this.readyState === this.DONE) {
+      let url;
+
+      if (isResponseRuleApplicableOnUrl(this.responseURL)) {
+        url = this.responseURL;
+      } else if (isResponseRuleApplicableOnUrl(this.requestURL)) {
+        url = this.requestURL;
+      } else {
+        return;
+      }
+
+      const responseRule = getResponseRule(url);
+      const { response: responseModification, source } = responseRule.pairs[0];
+      const responseType = this.responseType;
+      const contentType = this.getResponseHeader("content-type");
+
+      isDebugMode &&
+        console.log("RQ", "Inside the XHR onReadyStateChange block for url", {
+          url,
+          xhr: this,
+        });
+
+      // If requestPayloadTargeting is defined and doesn't match then don't override the response getter
+      if (
+        !isRequestPayloadFilterApplicable(
+          {
+            requestData: jsonifyValidJSONString(this.requestData),
+            method: this.method,
+          },
+          source?.filters
+        )
+      ) {
+        return;
+      }
+
+      if (this.readyState === this.HEADERS_RECEIVED) {
+        // For network failures, responseStatus=0 but we still return customResponse with status=200
+        const responseStatus = responseModification.statusCode || this.status || 200;
+        const responseStatusText = responseModification.statusText || this.statusText;
+
+        Object.defineProperty(this, "status", {
+          get: () => responseStatus,
+        });
+
+        Object.defineProperty(this, "statusText", {
+          get: () => responseStatusText,
+        });
+      }
+
+      if (this.readyState === this.DONE) {
+        let customResponse =
+          responseModification.type === "code"
+            ? getFunctionFromCode(responseModification.value)({
+                method: this.method,
+                url,
+                requestHeaders: this.requestHeaders,
+                requestData: jsonifyValidJSONString(this.requestData),
+                responseType: contentType,
+                response: this.response,
+                responseJSON: jsonifyValidJSONString(this.response, true),
+              })
+            : responseModification.value;
+
+        // Convert customResponse back to rawText
+        // response.value is String and evaluator method might return string/object
+        if (isPromise(customResponse)) {
+          customResponse = await customResponse;
+        }
+
+        const isUnsupportedResponseType = responseType && !["json", "text"].includes(responseType);
+
+        // We do not support statically modifying responses of type - blob, arraybuffer, document etc.
+        if (responseModification.type === "static" && isUnsupportedResponseType) {
+          customResponse = this.response;
+        }
+
+        if (
+          !isUnsupportedResponseType &&
+          typeof customResponse === "object" &&
+          !(customResponse instanceof Blob) &&
+          (responseType === "json" || isContentTypeJSON(contentType))
+        ) {
+          customResponse = JSON.stringify(customResponse);
+        }
+
+        Object.defineProperty(this, "response", {
+          get: function () {
+            if (responseModification.type === "static" && responseType === "json") {
+              if (typeof customResponse === "object") {
+                return customResponse;
+              }
+
+              return jsonifyValidJSONString(customResponse);
+            }
+
+            return customResponse;
+          },
+        });
+
+        if (responseType === "" || responseType === "text") {
+          Object.defineProperty(this, "responseText", {
+            get: function () {
+              return customResponse;
+            },
+          });
+        }
+
+        const requestDetails = {
+          url,
+          method: this.method,
+          type: "xmlhttprequest",
+          timeStamp: Date.now(),
+        };
+
+        notifyResponseRuleApplied({
+          rule: responseRule,
+          requestDetails,
+        });
+      }
+    }
+  };
+
+  const XHR = XMLHttpRequest;
+  XMLHttpRequest = function () {
+    const xhr = new XHR();
+    xhr.addEventListener("readystatechange", onReadyStateChange.bind(xhr), false);
+    return xhr;
+  };
+  XMLHttpRequest.prototype = XHR.prototype;
+  Object.entries(XHR).map(([key, val]) => {
+    XMLHttpRequest[key] = val;
+  });
+
+  const open = XMLHttpRequest.prototype.open;
+  XMLHttpRequest.prototype.open = function (method, url) {
+    this.method = method;
+    this.requestURL = url;
+    open.apply(this, arguments);
+  };
+
+  const send = XMLHttpRequest.prototype.send;
+  XMLHttpRequest.prototype.send = function (data) {
+    const requestRule = getRequestRule(this.requestURL);
+    let requestBody;
+
+    if (requestRule) {
+      requestBody = getCustomRequestBody(requestRule, {
+        method: this.method,
+        url: this.requestURL,
+        body: data,
+        bodyAsJson: jsonifyValidJSONString(data, true),
+      });
+
+      notifyRequestRuleApplied({
+        ruleDetails: requestRule,
+        requestDetails: {
+          url: this.requestURL,
+          method: this.method,
+          type: "xmlhttprequest",
+          timeStamp: Date.now(),
+        },
+      });
+    } else {
+      requestBody = data;
+    }
+
+    this.requestData = requestBody;
+    send.call(this, requestBody);
+  };
+
+  let setRequestHeader = XMLHttpRequest.prototype.setRequestHeader;
+  XMLHttpRequest.prototype.setRequestHeader = function (header, value) {
+    this.requestHeaders = this.requestHeaders || {};
+    this.requestHeaders[header] = value;
+    setRequestHeader.apply(this, arguments);
+  };
+
+  // Intercept fetch API
+  const _fetch = fetch;
+  fetch = async (...args) => {
+    const [resource, initOptions = {}] = args;
+    const getOriginalResponse = () => _fetch(...args);
+
+    let request;
+
+    if (resource instanceof Request) {
+      request = resource.clone();
+    } else {
+      request = new Request(resource.toString(), initOptions);
+    }
+
+    let fetchedResponse;
+    let exceptionCaught;
+
+    const method = request.method;
+    // Request body can be sent only for request methods other than GET and HEAD.
+    const canRequestBodyBeSent = !["GET", "HEAD"].includes(method);
+
+    const requestRule = canRequestBodyBeSent && getRequestRule(request.url);
+    if (requestRule) {
+      const originalRequestBody = await request.text();
+      const requestBody =
+        getCustomRequestBody(requestRule, {
+          method: request.method,
+          url: request.url,
+          body: originalRequestBody,
+          bodyAsJson: jsonifyValidJSONString(originalRequestBody, true),
+        }) || {};
+
+      request = new Request(request.url, {
+        method,
+        body: requestBody,
+        headers: request.headers,
+        referrer: request.referrer,
+        referrerPolicy: request.referrerPolicy,
+        mode: request.mode,
+        credentials: request.credentials,
+        cache: request.cache,
+        redirect: request.redirect,
+        integrity: request.integrity,
+      });
+
+      notifyRequestRuleApplied({
+        ruleDetails: requestRule,
+        requestDetails: {
+          url: request.url,
+          method: request.method,
+          type: "fetch",
+          timeStamp: Date.now(),
+        },
+      });
+    }
+
+    try {
+      if (requestRule) {
+        // request has already been read while processing requestRule, so needs to be cloned
+        fetchedResponse = await _fetch(request.clone());
+      } else {
+        fetchedResponse = await getOriginalResponse();
+      }
+    } catch (error) {
+      exceptionCaught = error;
+    }
+
+    let url;
+
+    if (fetchedResponse && isResponseRuleApplicableOnUrl(fetchedResponse.url)) {
+      url = fetchedResponse.url; // final URL obtained after any redirects
+    } else if (isResponseRuleApplicableOnUrl(request.url)) {
+      url = request.url;
+    } else {
+      if (exceptionCaught) {
+        return Promise.reject(exceptionCaught);
+      }
+      return fetchedResponse;
+    }
+
+    const responseRule = getResponseRule(url);
+    const { response: responseModification, source } = responseRule.pairs[0];
+
+    if (fetchedResponse?.status === 204) {
+      // Return the same response when status is 204. fetch doesn't allow to create new response with empty body
+      return fetchedResponse;
+    }
+
+    isDebugMode &&
+      console.log("RQ", "Inside the fetch block for url", {
+        url,
+        resource,
+        initOptions,
+        fetchedResponse,
+      });
+
+    let requestData;
+
+    if (canRequestBodyBeSent) {
+      requestData = jsonifyValidJSONString(await request.text());
+    } else {
+      requestData = convertSearchParamsToJSON(url);
+    }
+
+    if (!isRequestPayloadFilterApplicable({ requestData, method }, source?.filters)) {
+      return fetchedResponse;
+    }
+
+    let customResponse;
+
+    if (responseModification.type === "code") {
+      const requestHeaders =
+        request.headers &&
+        Array.from(request.headers).reduce((obj, [key, val]) => {
+          obj[key] = val;
+          return obj;
+        }, {});
+
+      let evaluatorArgs = {
+        method,
+        url,
+        requestHeaders,
+        requestData,
+      };
+
+      if (fetchedResponse) {
+        const fetchedResponseData = await fetchedResponse.text();
+        const responseType = fetchedResponse.headers.get("content-type");
+        const fetchedResponseDataAsJson = jsonifyValidJSONString(fetchedResponseData, true);
+
+        evaluatorArgs = {
+          ...evaluatorArgs,
+          responseType,
+          response: fetchedResponseData,
+          responseJSON: fetchedResponseDataAsJson,
+        };
+      }
+
+      customResponse = getFunctionFromCode(responseModification.value)(evaluatorArgs);
+
+      // evaluator might return us Object but response.value is string
+      // So make the response consistent by converting to JSON String and then create the Response object
+      if (isPromise(customResponse)) {
+        customResponse = await customResponse;
+      }
+
+      if (typeof customResponse === "object" && isContentTypeJSON(evaluatorArgs?.responseType)) {
+        customResponse = JSON.stringify(customResponse);
+      }
+    } else {
+      customResponse = responseModification.value;
+    }
+
+    const requestDetails = {
+      url,
+      method,
+      type: "fetch",
+      timeStamp: Date.now(),
+    };
+
+    notifyResponseRuleApplied({
+      rule: responseRule,
+      requestDetails,
+    });
+
+    return new Response(new Blob([customResponse]), {
+      // For network failures, fetchedResponse is undefined but we still return customResponse with status=200
+      status: responseModification.statusCode || fetchedResponse?.status || 200,
+      statusText: responseModification.statusText || fetchedResponse?.statusText,
+      headers: fetchedResponse?.headers,
+    });
+  };
+})('__REQUESTLY__')</script>
+<script type="text/javascript">window.addEventListener('DOMContentLoaded',function(){var v=archive_analytics.values;v.service='wb';v.server_name='wwwb-app203.us.archive.org';v.server_ms=825;archive_analytics.send_pageview({});});</script>
+<script type="text/javascript" src="./contact-us_files/bundle-playback.js" charset="utf-8"></script>
+<script type="text/javascript" src="./contact-us_files/wombat.js" charset="utf-8"></script>
+<script type="text/javascript">
+  __wm.init("http://web.archive.org/web");
+  __wm.wombat("http://www.voiceforge.com:80/contact-us","20160426204334","http://web.archive.org/","web","/_static/",
+	      "1461703414");
+</script>
+<link rel="stylesheet" type="text/css" href="./contact-us_files/banner-styles.css">
+<link rel="stylesheet" type="text/css" href="./contact-us_files/iconochive.css">
+<!-- End Wayback Rewrite JS Include -->
+
+
+<title>VoiceForge | Contact Us</title>
+<link rel="stylesheet" type="text/css" href="./contact-us_files/main2.css">
+<meta name="description" content="VoiceForge offers online Text-to-Speech TTS voices through a server application.  We convert your Internet text into speech on-demand.">
+<meta name="keywords" content="TTS, Text-to-Speech, Text-to-Voice, VoiceForge, speech, talking software, hosted, SaaS, synthesis, free demo, interactive, voice engine, audio, record, custom voices, prosody, voice demo, online tts, reader, synthesizer, converter, conversion, download">
+<meta name="robots" content="index, follow">
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+</head>
+<body><!-- BEGIN WAYBACK TOOLBAR INSERT -->
+<script>__wm.rw(0);</script>
+<div id="wm-ipp-base" lang="en" style="display: block; direction: ltr;"><template shadowrootmode="closed"><div id="wm-ipp" style="position:fixed;left:0;top:0;right:0;" class="">
+<div id="donato" style="position:relative;width:100%;">
+  <div id="donato-base">
+    <iframe id="donato-if" src="https://archive.org/includes/donate.php?as_page=1&amp;platform=wb&amp;referer=http%3A//web.archive.org/web/20160426204334/http%3A//www.voiceforge.com/contact-us" scrolling="no" frameborder="0" style="width:100%; height:100%">
+    </iframe>
+  </div>
+</div><div id="wm-ipp-inside">
+  <div id="wm-toolbar" style="position:relative;display:flex;flex-flow:row nowrap;justify-content:space-between;">
+    <div id="wm-logo" style="/*width:110px;*/padding-top:12px;">
+      <a href="http://web.archive.org/web/" title="Wayback Machine home page"><img src="http://web.archive.org/_static/images/toolbar/wayback-toolbar-logo-200.png" srcset="/_static/images/toolbar/wayback-toolbar-logo-100.png, /_static/images/toolbar/wayback-toolbar-logo-150.png 1.5x, /_static/images/toolbar/wayback-toolbar-logo-200.png 2x" alt="Wayback Machine" style="width:100px" border="0"></a>
+    </div>
+    <div class="c" style="display:flex;flex-flow:column nowrap;justify-content:space-between;flex:1;">
+      <form class="u" style="display:flex;flex-direction:row;flex-wrap:nowrap;" target="_top" method="get" action="http://web.archive.org/web/submit" name="wmtb" id="wmtb"><input type="text" name="url" id="wmtbURL" value="http://www.voiceforge.com/contact-us" onfocus="this.focus();this.select();" style="flex:1;" autocomplete="off"><input type="hidden" name="type" value="replay"><input type="hidden" name="date" value="20160426204334"><input type="submit" value="Go">
+      </form>
+      <div style="display:flex;flex-flow:row nowrap;align-items:flex-end;">
+                <div class="s" id="wm-nav-captures" style="flex:1;"><a class="t" href="http://web.archive.org/web/*/http://www.voiceforge.com/contact-us" title="See a list of every capture for this URL">49 captures</a><div class="r" title="Timespan for captures of this URL">31 May 2010 - 2 Mar 2021</div></div>
+        <div class="k">
+          <a href="http://web.archive.org/web/20050801000000/http://www.voiceforge.com/contact-us" id="wm-graph-anchor">
+            <div id="wm-ipp-sparkline" title="Explore captures for this URL" style="position: relative">
+              <canvas id="wm-sparkline-canvas" width="700" height="27" border="0"></canvas>
+            <div class="yt" style="display: none; width: 25px; height: 27px; left: 225px;"></div><div class="mt" style="display: none; width: 2px; height: 27px; left: 240px;"></div></div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="n">
+      <table>
+        <tbody>
+          <!-- NEXT/PREV MONTH NAV AND MONTH INDICATOR -->
+          <tr class="m">
+            <td class="b" nowrap="nowrap"><a href="http://web.archive.org/web/20150817033825/http://www.voiceforge.com:80/contact-us" title="17 Aug 2015"><strong>Aug</strong></a></td>
+            <td class="c" id="displayMonthEl" title="You are here: 20:43:34 Apr 26, 2016">Apr</td>
+            <td class="f" nowrap="nowrap"><a href="http://web.archive.org/web/20160527111614/http://www.voiceforge.com:80/contact-us" title="27 May 2016"><strong>May</strong></a></td>
+          </tr>
+          <!-- NEXT/PREV CAPTURE NAV AND DAY OF MONTH INDICATOR -->
+          <tr class="d">
+            <td class="b" nowrap="nowrap"><a href="http://web.archive.org/web/20150817033825/http://www.voiceforge.com:80/contact-us" title="03:38:25 Aug 17, 2015"><img src="http://web.archive.org/_static/images/toolbar/wm_tb_prv_on.png" alt="Previous capture" width="14" height="16" border="0"></a></td>
+            <td class="c" id="displayDayEl" style="width:34px;font-size:22px;white-space:nowrap;" title="You are here: 20:43:34 Apr 26, 2016">26</td>
+            <td class="f" nowrap="nowrap"><a href="http://web.archive.org/web/20160527111614/http://www.voiceforge.com:80/contact-us" title="11:16:14 May 27, 2016"><img src="http://web.archive.org/_static/images/toolbar/wm_tb_nxt_on.png" alt="Next capture" width="14" height="16" border="0"></a></td>
+          </tr>
+          <!-- NEXT/PREV YEAR NAV AND YEAR INDICATOR -->
+          <tr class="y">
+            <td class="b" nowrap="nowrap"><a href="http://web.archive.org/web/20150407164617/http://www.voiceforge.com:80/contact-us" title="07 Apr 2015"><strong>2015</strong></a></td>
+            <td class="c" id="displayYearEl" title="You are here: 20:43:34 Apr 26, 2016">2016</td>
+            <td class="f" nowrap="nowrap"><a href="http://web.archive.org/web/20170513211953/http://www.voiceforge.com:80/contact-us" title="13 May 2017"><strong>2017</strong></a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="r" style="display:flex;flex-flow:column nowrap;align-items:flex-end;justify-content:space-between;">
+      <div id="wm-btns" style="text-align:right;height:23px;">
+                <span class="xxs">
+          <div id="wm-save-snapshot-success">success</div>
+          <div id="wm-save-snapshot-fail">fail</div>
+          <a id="wm-save-snapshot-open" href="http://web.archive.org/web/20160426204334/http://www.voiceforge.com/contact-us#" title="Share via My Web Archive" style="display: none;">
+            <span class="iconochive-web"></span>
+          </a>
+          <a href="https://archive.org/account/login.php" title="Sign In" id="wm-sign-in" style="display: inline-block;">
+            <span class="iconochive-person"></span>
+          </a>
+          <span id="wm-save-snapshot-in-progress" class="iconochive-web" style="display: none;"></span>
+        </span>
+                <a class="xxs" href="http://faq.web.archive.org/" title="Get some help using the Wayback Machine" style="top:-6px;"><span class="iconochive-question" style="color:rgb(87,186,244);font-size:160%;"></span></a>
+        <a id="wm-tb-close" href="http://web.archive.org/web/20160426204334/http://www.voiceforge.com/contact-us#close" style="top:-2px;" title="Close the toolbar"><span class="iconochive-remove-circle" style="color:#888888;font-size:240%;"></span></a>
+      </div>
+      <div id="wm-share" class="xxs">
+        <a href="http://web.archive.org/web/20160426204334/http://web.archive.org/screenshot/http://www.voiceforge.com/contact-us" id="wm-screenshot" title="screenshot" style="visibility: hidden;">
+          <span class="wm-icon-screen-shot"></span>
+        </a>
+        <a href="http://web.archive.org/web/20160426204334/http://www.voiceforge.com/contact-us#" id="wm-video" title="video">
+          <span class="iconochive-movies"></span>
+        </a>
+        <a id="wm-share-facebook" href="http://web.archive.org/web/20160426204334/http://www.voiceforge.com/contact-us#" data-url="http://web.archive.org/web/20160426204334/http://www.voiceforge.com:80/contact-us" title="Share on Facebook" style="margin-right:5px;" target="_blank"><span class="iconochive-facebook" style="color:#3b5998;font-size:160%;"></span></a>
+        <a id="wm-share-twitter" href="http://web.archive.org/web/20160426204334/http://www.voiceforge.com/contact-us#" data-url="http://web.archive.org/web/20160426204334/http://www.voiceforge.com:80/contact-us" title="Share on Twitter" style="margin-right:5px;" target="_blank"><span class="iconochive-twitter" style="color:#1dcaff;font-size:160%;"></span></a>
+      </div>
+      <div style="padding-right:2px;text-align:right;white-space:nowrap;">
+        <a id="wm-expand" class="wm-btn wm-closed" href="http://web.archive.org/web/20160426204334/http://www.voiceforge.com/contact-us#expand" onclick="__wm.ex(event);return false;"><span id="wm-expand-icon" class="iconochive-down-solid"></span> <span class="xxs" style="font-size:80%;">About this capture</span></a>
+      </div>
+    </div>
+  </div>
+    <div id="wm-capinfo" style="border-top:1px solid #777;display:none; overflow: hidden">
+        <div id="wm-capinfo-notice" source="api"></div>
+                <div id="wm-capinfo-collected-by">
+    <div style="background-color:#666;color:#fff;font-weight:bold;text-align:center">COLLECTED BY</div>
+    <div style="padding:3px;position:relative" id="wm-collected-by-content">
+            <div style="display:inline-block;vertical-align:top;width:50%;">
+			<span class="c-logo" style="background-image:url(https://archive.org/services/img/alexacrawls);"></span>
+		Organization: <a style="color:#33f;" href="https://archive.org/details/alexacrawls" target="_new"><span class="wm-title">Alexa Crawls</span></a>
+		<div style="max-height:75px;overflow:hidden;position:relative;">
+	  <div style="position:absolute;top:0;left:0;width:100%;height:75px;background:linear-gradient(to bottom,rgba(255,255,255,0) 0%,rgba(255,255,255,0) 90%,rgba(255,255,255,255) 100%);"></div>
+	  Starting in 1996, <a href="http://www.alexa.com/">Alexa Internet</a> has been donating their crawl data to the Internet Archive.  Flowing in every day, these data are added to the <a href="http://web.archive.org/">Wayback Machine</a> after an embargo period.
+	</div>
+	      </div>
+      <div style="display:inline-block;vertical-align:top;width:49%;">
+			<span class="c-logo" style="background-image:url(https://archive.org/services/img/alexacrawls)"></span>
+		<div>Collection: <a style="color:#33f;" href="https://archive.org/details/alexacrawls" target="_new"><span class="wm-title">Alexa Crawls</span></a></div>
+		<div style="max-height:75px;overflow:hidden;position:relative;">
+	  <div style="position:absolute;top:0;left:0;width:100%;height:75px;background:linear-gradient(to bottom,rgba(255,255,255,0) 0%,rgba(255,255,255,0) 90%,rgba(255,255,255,255) 100%);"></div>
+	  Starting in 1996, <a href="http://www.alexa.com/">Alexa Internet</a> has been donating their crawl data to the Internet Archive.  Flowing in every day, these data are added to the <a href="http://web.archive.org/">Wayback Machine</a> after an embargo period.
+	</div>
+	      </div>
+    </div>
+    </div>
+    <div id="wm-capinfo-timestamps">
+    <div style="background-color:#666;color:#fff;font-weight:bold;text-align:center" title="Timestamps for the elements of this page">TIMESTAMPS</div>
+    <div>
+      <div id="wm-capresources" style="margin:0 5px 5px 5px;max-height:250px;overflow-y:scroll !important"></div>
+      <div id="wm-capresources-loading" style="text-align:left;margin:0 20px 5px 5px;display:none"><img src="http://web.archive.org/_static/images/loading.gif" alt="loading"></div>
+    </div>
+    </div>
+  </div></div></div><link rel="stylesheet" type="text/css" href="./contact-us_files/banner-styles.css"><link rel="stylesheet" type="text/css" href="./contact-us_files/iconochive.css"><div class="wb-autocomplete-suggestions " style="left: 135px; top: 23px; width: 1057px;"></div></template>
+</div><div id="wm-ipp-print">The Wayback Machine - http://web.archive.org/web/20160426204334/http://www.voiceforge.com:80/contact-us</div>
+<script type="text/javascript">//<![CDATA[
+__wm.bt(700,27,25,2,"web","http://www.voiceforge.com/contact-us","20160426204334",1996,"/_static/",["/_static/css/banner-styles.css?v=S1zqJCYt","/_static/css/iconochive.css?v=qtvMKcIJ"], false);
+  __wm.rw(1);
+//]]></script>
+<!-- END WAYBACK TOOLBAR INSERT -->
+ 
+<header>
+<h1><a href="http://web.archive.org/web/20160426204334/http://www.voiceforge.com/"><img src="./contact-us_files/VoiceForge.jpg" width="186" height="57" alt="VoiceForge"></a></h1>
+<nav>
+<ul id="toolbar-navigation">
+<li><a href="http://web.archive.org/web/20160426204334/http://www.voiceforge.com/">Home</a>
+</li><li class="lst cur"><a href="http://web.archive.org/web/20160426204334/http://www.voiceforge.com/contact-us">Contact Us</a>
+</li></ul>
+<ul id="main-navigation">
+<li><a href="http://web.archive.org/web/20160426204334/http://www.voiceforge.com/what-is-voiceforge">What is VoiceForge?</a>
+</li><li><a href="http://web.archive.org/web/20160426204334/http://www.voiceforge.com/demo">Demo</a>
+</li><li><a href="http://web.archive.org/web/20160426204334/http://www.voiceforge.com/partners">Our Partners</a>
+</li><li><a href="http://web.archive.org/web/20160426204334/http://www.voiceforge.com/company">Our Company</a>
+</li><li class="lst"><a href="http://web.archive.org/web/20160426204334/http://www.voiceforge.com/sign-up">Sign Up</a>
+</li></ul>
+</nav>
+</header>
+
+
+<div class="page-header">
+<img src="./contact-us_files/contact.jpg" width="860" height="151" alt="Demo" usemap="#hmap">
+<map name="hmap">
+<area shape="rect" coords="544,20,669,65" href="http://web.archive.org/web/20160426204334/http://www.voiceforge.com/demo?uservoice=Callie">
+</map>
+</div>
+
+<div id="content-wrapper">
+<div id="sub-content">
+<h3>News</h3>
+<dl>
+<dt>9/5/08</dt>
+<dd>Voxpilot Partners with Cepstral to Offer Affordable Quality Text-to-Speech Voices</dd>
+<dt>8/18/08</dt>
+<dd>World's Largest Catalog of English Text-to-Speech (TTS) Voices now an Online Service</dd>
+</dl>
+</div>
+
+<div id="content">
+<p>We welcome inquiries and questions about our online TTS service, opportunities for partnership, or custom voice building.</p>
+<h2>VoiceForge</h2><p>1801 East Carson Street<br>Second Floor<br>Pittsburgh, PA 15203<br>USA</p>
+<table id="contact" border="0">
+<tbody><tr>
+<td><p>Phone:</p></td>
+<td><p>412-432-0400</p></td>
+</tr>
+<tr>
+<td><p>Fax:</p></td>
+<td><p>412-432-0406</p></td>
+</tr>
+<tr>
+<td><p>Email:</p></td>
+<td>
+<script language="JavaScript" type="text/javascript">
+<!--
+document.write('<p><a href="mailto:' + 'developer' + '@' + 'voiceforge.com' + '">');
+document.write('developer' + '@' + 'voiceforge.com' + '</a></p>');
+//-->
+</script><p><a href="mailto:developer@voiceforge.com">developer@voiceforge.com</a></p>
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>		
+
+<footer>
+<p>Technology and Copyright © 2010 Cepstral LLC. All Rights Reserved.</p>
+<p class="power">Powered by: <a href="http://web.archive.org/web/20160426204334/http://www.cepstral.com/"><img src="./contact-us_files/cepstral-logo.gif" width="79" height="20" alt="Cepstral"></a></p>
+</footer>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "http://web.archive.org/web/20160426204334/https://ssl." : "http://web.archive.org/web/20160426204334/http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="./contact-us_files/ga.js" type="text/javascript"></script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-2269415-4");
+pageTracker._trackPageview();
+</script>
+
+
+
+<div id="mulberry-extension" style="display: block; position: fixed; top: 10px; right: 10px; z-index: 2147483647; visibility: hidden;"><template shadowrootmode="closed"><iframe name="mulberry-extension-iframe" src="chrome-extension://doheogeolmnlejjfpdfldnnicofckndc/index.html" style="display: block; height: 0px; width: 0px; border: none;"></iframe></template></div><script type="text/javascript" src="chrome-extension://doheogeolmnlejjfpdfldnnicofckndc/web_accessible_resources.js"></script></body></html>

@@ -873,6 +873,7 @@ $(document).ready(function(){
 	}());
 	$("#play").click(function()
 	{
+		 var is504 = false;
 		var voice = $("#curvox").val();
 		var text  = $("#dtu").val();
 		
@@ -889,7 +890,6 @@ $.ajax({
 	    $("div#status").html("Ready"); 
     var blob = new Blob([data], { type: 'audio/wav' });
     var url = window.URL.createObjectURL(blob); //where value is the blob
-	 var is504 = false;
     window.audio = new Audio(url);
     window.audio.play();
     },

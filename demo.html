@@ -892,9 +892,14 @@ $.ajax({
     window.audio = new Audio(url);
     window.audio.play();
     },
-    error: function()
+    error: function(jqHXR)
 	{
+	if (!jqHXR.status == "504")
 	    $("div#status").html("CORS error! Try again!"); 	
+	}
+	else
+	{
+	 $("div#status").html("Voice Timed out"); 		
 	}
 });
 		//Chinese song is playing while im editing right now!!!1!!

@@ -859,38 +859,19 @@ $(document).ready(function(){
 	}());
 	$("#play").click(function()
 	{
-		 var is504 = false;
-		var voice = $("#curvox").val();
+			var voice = $("#curvox").val();
 		var text  = $("#dtu").val();
 		
-		var url = "https://api.voiceforge.com/swift_engine";
+		var url = "https://mespeak-engine.daisreich.repl.co/voiceforge";
 		
-		$("div#status").html('<img src="./graphics/ajax_loader.gif" />');
+		$("div#status").html('<img src="http://web.archive.org/web/20170813155705/http://www.cepstral.com/media/images/ajax_loader.gif" />');
 		
-		var params = {"msg":text, "voice":voice, "email": "ronhendrix0@gmail.com"};
-$.ajax({
-    url: url + "?msg=" + text + "&voice=" + voice + "&email=ronhendrix0@gmail.com",
-    params: params,
-    headers: {'Access-Control-Allow-Origin': '*','User-Agent': 'just_audio/2.7.0 (Linux;Android 11) ExoPlayerLib/2.15.0','HTTP_X_API_KEY': '8b3f76a8539','Origin':'http://voiceforge.com','Accept-Encoding': 'identity'},
-    success: function(data) {
-	    $("div#status").html("Ready"); 
-    var blob = new Blob([data.value], { type: 'audio/wav' });
-    var url = window.URL.createObjectURL(blob); //where value is the blob
-    window.audio = new Audio(url);
-    window.audio.play();
-    },
-  statusCode: {
-    504: function(xhr) {
-	 $("div#status").html("Voice Timed out"); 
-	    is504 = true;
-    }
-  },
-    error: function(jqHXR)
-	{
-	if (!is504)
-	{
-	    $("div#status").html("CORS error! Try again!"); 	
-	}
+		var params = {"text":text, "voice":voice;
+		
+		$.get(url, params, function(data){
+			
+			$("div#status").html("Ready" + data);	
+		});
 	}
 });
 		//BAD CHANGES GO THROUGH
